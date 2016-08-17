@@ -30,10 +30,10 @@ global  class registrationController  {
                             message = message +  yesParticipant.alagukannan__Player__r.Name +',';
                     }
                     message = message + ' . May be Players: ';
-                    for (alagukannan__Participant__c yesParticipant : participantYesRecords)
+                    for (alagukannan__Participant__c maybeParticipant : participantYesRecords)
                     {
-                        if(yesParticipant.alagukannan__status__c == 'Maybe')
-                            message = message +  yesParticipant.alagukannan__Player__r.Name +',';
+                        if(maybeParticipant.alagukannan__status__c == 'Maybe')
+                            message = message +  maybeParticipant.alagukannan__Player__r.Name +',';
                     }
                 }
                 
