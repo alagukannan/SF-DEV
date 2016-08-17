@@ -15,6 +15,7 @@
 		<members>sch_hourlyJobs</members>
 		<members>registrationV2Controller</members>
 		<members>RCCEnums</members>
+		<members>participantResponseV2</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
