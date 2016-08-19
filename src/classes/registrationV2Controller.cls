@@ -53,10 +53,47 @@ global  class  registrationV2Controller {
     }
 
     @HttpPost
-    global static Boolean create() {
+    global static void doUpdate(Id id, String token, String status, decimal guests, String comments)
+    {
+        RestResponse response = RestContext.response;
+        response.statusCode = 200;
+        response.responseBody = BLob.valueof(Id + ' ' + token + ' ' + status + ' ' + guests + ' ' + comments); 
 
-        return false;
+        if(RCCEnums.PARTICIPANT_STATUS_VALUES.contains(status))
+        {
+            List<alagukannan__Participant__c> participantRecords = [select Id,alagukannan__status__c,alagukannan__Guests__c,alagukannan__Comments__c from alagukannan__Participant__c where  alagukannan__token__c = :token and alagukannan__Event__r.alagukannan__Status__c = : RCCEnums.EVENT_STATUS_VALUES.name()];
+            if(participantRecords.size() == 1)
+            {
+                alagukannan__Participant__c participant = participantRecords[0];
+                if (participant.alagukannan__status__c != status)
+                {
+                    participant.alagukannan__status__c = status;
+                    if (string.isnotblank(comments))
+                        participant.alagukannan__Comments__c = comments;
+                    if(guests != Null)
+                        participant.alagukannan__Guests__c = guests;
+                    
 
+                    update participant;                    
+                }
+            }
+            else if (participantRecords.size() > 1)
+            {
+                throw new QueryException('Multiple Records found for token : ' + token);
+                response.statusCode = 500;
+            }
+            else
+            {
+                // do nothing
+            }
+        }
+        else
+        {
+            response.statusCode = 406;
+        }
+
+
+        return;
     }
 
 
